@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="./css/input.css">
+</head>
+
+<body>
+    <div class="loginContainer">
+        <div class="loginTitle">
+            <h1>Login Container</h1>
+        </div>
+        <div class="inputContainer">
+            <form id="myForm">
+                <div class="form-group">
+                    <label for="userName">UserName</label>
+                    <input type="text" name="username" id="userName" placeholder="userName">
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Email</label>
+                    <input type="email" name="email" id="userEmail" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <label for="userPassword">Password</label>
+                    <input type="password" name="password" id="userPassword" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <label for="userCPassword">Confirm Password</label>
+                    <input type="password" name="confirmpassword" id="userCPassword" placeholder="Confirm Password">
+                </div>
+                <div class="form-btn">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+            <a href="/api/auth/google"><button id="googleBtn">Sign in with Google</button></a>
+            <div id="login_account" class="fpara">
+                Already have an account: <a href="/login">login</a>
+            </div>
+            <div id="otpOverlay" class="otp-overlay hidden">
+                <div class="otp-box">
+                    <div class="spinner"></div>
+                    <p>Sending OTP...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+
+    const form = document.getElementById("myForm")
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // show animation
+        otpOverlay.classList.remove("hidden");
+
+        try {
+            const res = await fetch("/api/auth/verify-otp", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: form.username.value,
+                    email: form.email.value,
+                    password: form.password.value,
+                    confirmpassword: form.confirmpassword.value,
+                })
+            });
+
+            const data = await res.json();
+
+            // hide animation
+            otpOverlay.classList.add("hidden");
+
+            alert(data.message);
+            if (data.message == "OTP sent successfully") {
+                window.location.href = "/api/auth/verify-otp";
+            }
+        } catch (err) {
+            otpOverlay.classList.add("hidden");
+            console.log(err)
+            alert("Server error");
+        }
+    });
+</script>
+
+</html>

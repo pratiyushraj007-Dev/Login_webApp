@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>verify-otp</title>
+  <link rel="stylesheet" href="/css/verify-otp.css">
+</head>
+
+<body>
+  <div class="container">
+    <h2>Verify OTP</h2>
+    <p>Enter the 6-digit code sent to your email</p>
+    <div class="otp-inputs">
+      <form id="myForm">
+        <input type="text" maxlength="1" required inputmode="numeric" />
+        <input type="text" maxlength="1" required inputmode="numeric" />
+        <input type="text" maxlength="1" required inputmode="numeric" />
+        <input type="text" maxlength="1" required inputmode="numeric" />
+        <input type="text" maxlength="1" required inputmode="numeric" />
+        <input type="text" maxlength="1" required inputmode="numeric" />
+    </div>
+
+
+    <button type="submit" id="verifyBtn">Verify</button>
+    </form>
+
+    <div class="resend">
+      Didn’t receive code? <a href="#">Resend</a>
+    </div>
+  </div>
+</body>
+<script>
+  const form = document.getElementById("myForm");
+  let otpArray = [];
+  [...document.getElementsByTagName("input")].forEach((element, index) => {
+    element.addEventListener("input", (e) => {
+      if (Number(e.target.value) || e.target.value == "0") {
+        otpArray[index] = e.target.value;
+      }
+      else {
+        otpArray[index] = "";
+        e.target.value = "";
+      }
+    })
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const otp = otpArray.join("");
+    const res = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ otp }),
+      credentials: "include"
+    });
+    const result = await res.json();
+    if (result.redirect) {
+      window.location.href = result.redirect; // ✅ actual redirect
+    }
+  })
+
+</script>
+
+</html>

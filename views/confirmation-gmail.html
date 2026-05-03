@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation gmail</title>
+    <link rel="stylesheet" href="/css/confirmation-gmail.css">
+</head>
+
+<body>
+    <div class="confirmation_container">
+        <form id="myForm">
+            <div class="form-group">
+                <label for="userName">UserName</label>
+                <input type="text" name="username" id="userName" placeholder="userName">
+            </div>
+            <div class="form-group" style="margin-top: 10px;">
+                <label for="userEmail">Confirmation gmail</label>
+                <input type="email" id="userEmail" name="email" placeholder="Enter your gmail" required>
+            </div>
+            <div class="submit-btn">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+        <div id="loader" class="hidden">
+            <div class="spinner"></div>
+            <p>Sending email...</p>
+        </div>
+    </div>
+</body>
+<script>
+    const loader = document.getElementById("loader");
+    const form = document.getElementById("myForm");
+    form.addEventListener("submit", async (e) => {
+        alert("Your request has been processing pls wait a minute");
+        e.preventDefault();
+        const email = document.getElementById("userEmail").value;
+        const username=document.getElementById("userName").value;
+        loader.classList.remove("hidden");
+        const res = await fetch("/api/auth/verify-gmail", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username, email }),
+            credentials: "include"
+        });
+        const data = await res.json();
+        loader.classList.add("hidden");
+        alert(data.message);
+    })
+</script>
+
+</html>

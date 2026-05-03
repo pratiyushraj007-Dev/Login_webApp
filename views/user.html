@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+
+<body>
+    <div class="profileContainer">
+        <div class="profileTitle">
+            User Profile
+        </div>
+        <div class="userDetails">
+            <p id="userNamePara">User: <span id="userName"></span></p>
+            <p id="userEmailPara">Email: <span id="userEmail"></span></p>
+        </div>
+        <div style="text-align: center;">
+            <button id="logout">Logout </button>
+        </div>
+    </div>
+    <script>
+        async function userCredentials() {
+            const res = await fetch("/api/auth/credential", {
+                credentials: "include"
+            })
+            if (res.status === 401) {
+                window.location.href = "/login";
+                return;
+            }
+            const data=await res.json();
+            document.getElementById("userName").innerText=data.username;
+            document.getElementById("userEmail").innerText=data.useremail;
+        }
+        userCredentials();
+
+        const logBtn=document.getElementById("logout");
+
+        logBtn.addEventListener("click",async()=>{
+            const res=await fetch("/logout",{
+                credentials:"include"
+            })
+            const data=await res.json();
+            console.log(data);
+            if(data.message=="logout successfully"){
+                window.location.href="/login"
+            }
+        })
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    background: #2980b9;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #2c3e50, #2980b9);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #2c3e50, #2980b9);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.loginTitle {
+    text-align: center;
+    background: #fd746c;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #ff9068, #fd746c);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #ff9068, #fd746c);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    padding: 25px;
+    border-radius: 10px;
+    color: #ffffff;
+}
+
+.loginContainer {
+    width: 500px;
+    margin: auto;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 30px #ffffff;
+    border-radius: 10px;
+}
+
+.inputContainer {
+    padding: 20px;
+}
+
+label {
+    font-size: 17px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.inputContainer input {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 3px;
+    font-size: 17px;
+    font-family: cursive;
+}
+
+.form-btn {
+    text-align: center;
+}
+
+.form-btn input {
+    background: #457fca;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #5691c8, #457fca);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #5691c8, #457fca);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: #ffffff;
+    border-radius: 10px;
+}
+
+#googleBtn {
+    font-size: 18px;
+    padding: 10px;
+    margin-top: 19px;
+    border-radius: 6px;
+    background-color: bisque;
+    font-weight: 600;
+    font-family: cursive;
+}
+
+#googleBtn a {
+    color: black;
+    text-decoration: none;
+}
+
+.fpara {
+    font-size: 17px;
+    margin-top: 15px;
+}
+
+.otp-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.otp-box {
+    background: white;
+    padding: 25px 40px;
+    border-radius: 12px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 10px;
+    border: 4px solid #ddd;
+    border-top: 4px solid #4f46e5;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.hidden {
+    display: none;
+}
