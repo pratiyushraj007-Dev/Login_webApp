@@ -7,12 +7,13 @@ const jwt = require("jsonwebtoken");
 
 const transport = nodemailer.createTransport({
     host: process.env.HOST,
-    port: 587,
-    secure: false,
+    port: 465,
+    secure: true,
     auth: {
         user: process.env.HOST_EMAIL,
         pass: process.env.HOST_PASSWORD
     },
+    family: 4
 });
 
 const registerUser = async (req, res) => {
@@ -84,12 +85,12 @@ const loginUser = async (req, res) => {
 const otpGeneration = async (req, res) => {
     const { username, email, password, confirmpassword } = req.body;
     if (password !== confirmpassword) {
-        res.status(400).json({
+        return res.status(400).json({
             message: "Password and Confirm Password should be same"
         })
     }
     if (!validator.validate(email)) {
-        res.status(400).json({
+        return res.status(400).json({
             message: "Email is invalid"
         })
     }
@@ -97,7 +98,7 @@ const otpGeneration = async (req, res) => {
         email
     })
     if (isUserExist) {
-        res.status(409).json({
+        return res.status(409).json({
             message: "User Already Exist"
         })
     }
@@ -124,7 +125,7 @@ const otpGeneration = async (req, res) => {
     } catch (error) {
         console.log(error);
         return res.status(401).json({
-            message:"Server error"
+            message: "Server error"
         })
     }
     res.cookie("tempToken", tempToken, {
@@ -141,7 +142,7 @@ const verifyGmail = async (req, res) => {
     try {
         const { username, email } = req.body;
         if (!validator.validate(email)) {
-            res.status(400).json({
+            return res.status(400).json({
                 message: "Email is invalid"
             })
         }
@@ -150,7 +151,7 @@ const verifyGmail = async (req, res) => {
             message: "User not found"
         });
         if (username !== user.username) {
-            res.status(404).json({
+            return res.status(404).json({
                 message: "Invalid Credential"
             })
         }
@@ -177,11 +178,11 @@ const verifyGmail = async (req, res) => {
             subject: "Password Reset Link",
             text: `Your password resent link ${resentLink}`
         })
-        res.status(200).json({
+        return res.status(200).json({
             message: "Reset Password link sent to your gmail and it will valid for 5 minutes"
         })
     } catch (error) {
-        res.status(404).json({
+        return res.status(404).json({
             message: "Server error"
         })
     }
@@ -190,7 +191,7 @@ const verifyGmail = async (req, res) => {
 const resetPassword = async (req, res) => {
     const { email, password, confirmPassword, token } = req.body;
     if (!validator.validate(email)) {
-        res.status(400).json({
+        return res.status(400).json({
             message: "Email is invalid"
         })
     }
