@@ -71,7 +71,7 @@
 ⚙️ Installation & Setup
 
       1️⃣ Clone the repository
-        git clone https://github.com/your-username/login_webApp.git
+        git clone https://github.com/pratiyushraj007-Dev/Login_webApp.git
         cd login_webApp
       
       2️⃣ Install dependencies
