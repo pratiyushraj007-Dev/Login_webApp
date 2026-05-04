@@ -6,13 +6,13 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 
 const transport = nodemailer.createTransport({
-    service: "gmail",
+    host: process.env.HOST,
+    port: 587,
+    secure: false,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+        user: process.env.HOST_EMAIL,
+        pass: process.env.HOST_PASSWORD
     },
-    family: 4, // keep this (important for Render)
-    pool: true
 });
 
 const registerUser = async (req, res) => {
@@ -122,7 +122,10 @@ const otpGeneration = async (req, res) => {
             text: `Your OTP is ${otpGen}`
         })
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        return res.status(401).json({
+            message:"Server error"
+        })
     }
     res.cookie("tempToken", tempToken, {
         maxAge: 5 * 60 * 1000 // 5 minutes

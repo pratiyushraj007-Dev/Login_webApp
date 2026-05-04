@@ -58,6 +58,9 @@
       alert("Pls login to see your profile");
       window.location.href = result.redirect; // ✅ actual redirect
     }
+    else{
+      alert(result.message);
+    }
   })
 
 </script>
