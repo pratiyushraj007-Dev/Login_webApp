@@ -10,23 +10,26 @@
       OTP-based email verification
       Password reset using time-limited tokens
     
-    It is designed to demonstrate how authentication works in real applications while keeping the structure organized and easy to extend.
+    It is designed to demonstrate how authentication works in real applications 
+    while keeping the structure organized and easy to extend.
 
 🚀 Features
-     . ✅ User Registration & Login
-     . 🔒 Password Hashing using bcrypt
-     . 🍪 JWT Authentication (stored in cookies)
-     . 📧 OTP Verification via Email
-     . 🔁 Forgot Password & Reset Password Flow
-     . ⏳ Reset Token Expiry Handling
-     . 🔐 Secure Password Update System
+
+    ✅ User Registration & Login
+    🔒 Password Hashing using bcrypt
+    🍪 JWT Authentication (stored in cookies)
+    📧 OTP Verification via Email
+    🔁 Forgot Password & Reset Password Flow
+    ⏳ Reset Token Expiry Handling
+    🔐 Secure Password Update System
 
 🛠️ Tech Stack
-   . Backend: Node.js, Express.js
-   . Database: MongoDB (Mongoose)
-   . Authentication: JWT, bcrypt
-   . Email Service: Nodemailer
-   . Environment Config: dotenv 
+
+    Backend: Node.js, Express.js
+    Database: MongoDB (Mongoose)
+    Authentication: JWT, bcrypt
+    Email Service: Nodemailer
+    Environment Config: dotenv 
 
 📂 Project Structure
 
