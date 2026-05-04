@@ -10,8 +10,7 @@
       OTP-based email verification
       Password reset using time-limited tokens
     
-    It is designed to demonstrate how authentication works in real applications while 
-    keeping the structure organized and easy to extend.
+    It is designed to demonstrate how authentication works in real applications while keeping the structure organized and easy to extend.
 
 🚀 Features
 
