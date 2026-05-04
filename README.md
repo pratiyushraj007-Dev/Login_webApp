@@ -1,16 +1,16 @@
 🔐 login_webApp
 
-    login_webApp is a user authentication system built using Node.js, Express, and MongoDB.
-    It implements the essential functionality required for managing user accounts and handling secure access to an application.
+   login_webApp is a user authentication system built using Node.js, Express, and MongoDB.
+      It implements the essential functionality required for managing user accounts and handling secure access to an application.
     
-    This project covers key authentication flows, including:
+   This project covers key authentication flows, including:
     
       User registration and login
       Password hashing for secure storage
       OTP-based email verification
       Password reset using time-limited tokens
     
-    It is designed to demonstrate how authentication works in real applications while keeping the structure organized and easy to extend.
+   It is designed to demonstrate how authentication works in real applications while keeping the structure organized and easy to extend.
 
 🚀 Features
 
