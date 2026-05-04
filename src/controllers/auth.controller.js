@@ -6,15 +6,14 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 
 const transport = nodemailer.createTransport({
-    host: process.env.HOST,
-    port: 587,
-    secure: false,
+    service: "gmail",
     auth: {
-        user: process.env.HOST_EMAIL,
-        pass: process.env.HOST_PASSWORD
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
     },
-    pool: true // keep connection alive
-})
+    family: 4, // keep this (important for Render)
+    pool: true
+});
 
 const registerUser = async (req, res) => {
     const { otp } = req.body;
