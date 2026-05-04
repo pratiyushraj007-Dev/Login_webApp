@@ -19,6 +19,8 @@ router.post("/verify-otp", authController.otpGeneration);
 router.post("/login", authController.loginUser);
 router.post("/verify-gmail",authController.verifyGmail);
 router.post("/reset-password",authController.resetPassword)
+
+
 router.get("/verify-otp", (req, res) => {
     const token = req.cookies.tempToken;
     if (!token) {

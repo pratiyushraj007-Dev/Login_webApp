@@ -25,10 +25,6 @@
 
     <button type="submit" id="verifyBtn">Verify</button>
     </form>
-
-    <div class="resend">
-      Didn’t receive code? <a href="#">Resend</a>
-    </div>
   </div>
 </body>
 <script>
@@ -59,6 +55,7 @@
     });
     const result = await res.json();
     if (result.redirect) {
+      alert("Pls login to see your profile");
       window.location.href = result.redirect; // ✅ actual redirect
     }
   })

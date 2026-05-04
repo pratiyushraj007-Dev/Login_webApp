@@ -2,16 +2,16 @@ const userModel = require("../models/user.model");
 const validator = require("email-validator");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
-const crypto=require("crypto");
+const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 
 const transport = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: process.env.HOST,
     port: 587,
     secure: false,
     auth: {
-        user: "pratiyush.raj007@gmail.com",
-        pass: "oamirrmmongzwccg"
+        user: process.env.HOST_EMAIL,
+        pass: process.env.HOST_PASSWORD
     },
     pool: true // keep connection alive
 })
@@ -53,13 +53,18 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
+    if (!validator.validate(email)) {
+        res.status(400).json({
+            message: "Email is invalid"
+        })
+    }
     const user = await userModel.findOne({ email });
     if (!user) {
         res.status(400).json({
             message: "Email does not exist in the DataBase"
         })
     }
-    const username=user.username;
+    const username = user.username;
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (passwordMatch) {
         const token = jwt.sign({
@@ -79,8 +84,7 @@ const loginUser = async (req, res) => {
 
 const otpGeneration = async (req, res) => {
     const { username, email, password, confirmpassword } = req.body;
-    console.log(req.body);
-    if (password != confirmpassword) {
+    if (password !== confirmpassword) {
         res.status(400).json({
             message: "Password and Confirm Password should be same"
         })
@@ -108,11 +112,11 @@ const otpGeneration = async (req, res) => {
         otp: hashedOtp,
         step: "sign-up"
     }, process.env.JWT_SECRET,
-        { expiresIn: "5m" })
+        { expiresIn: "5m" }) //expiry time 5 minute
 
 
     await transport.sendMail({
-        from: "pratiyush.raj007@gmail.com",
+        from: process.env.HOST_EMAIL,
         to: email,
         subject: "OTP",
         text: `Your OTP is ${otpGen}`
@@ -122,21 +126,26 @@ const otpGeneration = async (req, res) => {
     });
 
     res.status(200).json({
-        message:"OTP sent successfully"
+        message: "OTP sent successfully"
     })
 
 }
 
 const verifyGmail = async (req, res) => {
     try {
-        const { username,email } = req.body;
+        const { username, email } = req.body;
+        if (!validator.validate(email)) {
+            res.status(400).json({
+                message: "Email is invalid"
+            })
+        }
         const user = await userModel.findOne({ email });
         if (!user) return res.status(404).json({
-            message:"User not found"
+            message: "User not found"
         });
-        if(username!==user.username){
+        if (username !== user.username) {
             res.status(404).json({
-                message:"Invalid Credential"
+                message: "Invalid Credential"
             })
         }
         //1.Generate token
@@ -157,9 +166,9 @@ const verifyGmail = async (req, res) => {
 
         const resentLink = `http://localhost:3000/reset-password/${email}/${token}`;
         await transport.sendMail({
-            from: "pratiyush.raj007@gmail.com",
+            from: process.env.HOST_EMAIL,
             to: email,
-            subject: "OTP",
+            subject: "Password Reset Link",
             text: `Your password resent link ${resentLink}`
         })
         res.status(200).json({
@@ -167,39 +176,43 @@ const verifyGmail = async (req, res) => {
         })
     } catch (error) {
         res.status(404).json({
-            message:"Server error"
+            message: "Server error"
         })
     }
 }
 
-const resetPassword=async(req,res)=>{
-    console.log(req.body);
-    const {email,password,confirmPassword,token}=req.body;
-    if(password!==confirmPassword){
-        return res.status(401).json({
-            message:"password and confirm password does not match"
+const resetPassword = async (req, res) => {
+    const { email, password, confirmPassword, token } = req.body;
+    if (!validator.validate(email)) {
+        res.status(400).json({
+            message: "Email is invalid"
         })
     }
-    const user=await userModel.findOne({email});
-    if(user.resetTokenExpiry<Date.now()){
+    if (password !== confirmPassword) {
         return res.status(401).json({
-            message:"Token Expired"
+            message: "password and confirm password does not match"
         })
     }
-    const isMatch=await bcrypt.compare(token,user.resetToken);
-    if(!isMatch){
+    const user = await userModel.findOne({ email });
+    if (user.resetTokenExpiry < Date.now()) {
         return res.status(401).json({
-            message:"Invalid token"
+            message: "Token Expired"
         })
     }
-    user.password=password;
-    user.resetToken=undefined;
-    user.resetTokenExpiry=undefined;
+    const isMatch = await bcrypt.compare(token, user.resetToken);
+    if (!isMatch) {
+        return res.status(401).json({
+            message: "Invalid token"
+        })
+    }
+    user.password = password;
+    user.resetToken = null;
+    user.resetTokenExpiry = null;
     user.save();
     res.status(200).json({
-        message:"Password Changed Successfully"
+        message: "Password Changed Successfully"
     })
 }
 
 
-module.exports = { registerUser, otpGeneration, loginUser, verifyGmail,resetPassword };
+module.exports = { registerUser, otpGeneration, loginUser, verifyGmail, resetPassword };
