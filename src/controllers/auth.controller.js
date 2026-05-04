@@ -7,13 +7,12 @@ const jwt = require("jsonwebtoken");
 
 const transport = nodemailer.createTransport({
     host: process.env.HOST,
-    port: 465,
-    secure: true,
+    port: 587,
+    secure: false,
     auth: {
         user: process.env.HOST_EMAIL,
         pass: process.env.HOST_PASSWORD
     },
-    family: 4
 });
 
 const registerUser = async (req, res) => {
@@ -125,7 +124,7 @@ const otpGeneration = async (req, res) => {
     } catch (error) {
         console.log(error);
         return res.status(401).json({
-            message: "Server error"
+            message:"Server error"
         })
     }
     res.cookie("tempToken", tempToken, {
