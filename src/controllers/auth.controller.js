@@ -114,12 +114,16 @@ const otpGeneration = async (req, res) => {
         { expiresIn: "5m" }) //expiry time 5 minute
 
 
-    await transport.sendMail({
-        from: process.env.HOST_EMAIL,
-        to: email,
-        subject: "OTP",
-        text: `Your OTP is ${otpGen}`
-    })
+    try {
+        await transport.sendMail({
+            from: process.env.HOST_EMAIL,
+            to: email,
+            subject: "OTP",
+            text: `Your OTP is ${otpGen}`
+        })
+    } catch (error) {
+        console.log(error)
+    }
     res.cookie("tempToken", tempToken, {
         maxAge: 5 * 60 * 1000 // 5 minutes
     });
